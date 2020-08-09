@@ -21,7 +21,7 @@ public class UI : MonoBehaviour
     {
         if (_numberOfActiveBonfires != PlayerInventory.BonfiresNumber)
         {
-            _numberOfActiveBonfiresText.text = (PlayerInventory.BonfiresNumber).ToString();
+            _numberOfActiveBonfiresText.text = (PlayerInventory.BonfiresNumber).ToString() + "/5";
             _numberOfActiveBonfires = PlayerInventory.BonfiresNumber;
         }
 

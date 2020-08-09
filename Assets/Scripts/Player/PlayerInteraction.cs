@@ -10,9 +10,12 @@ public class PlayerInteraction : MonoBehaviour
     {
         if (other.tag == "Bonfire" && PlayerInventory.MatchesNumber > 0)
         {
-            other.GetComponent<Bonfire>().SetOnFire();
-            PlayerInventory.MatchesNumber--;
-            PlayerInventory.BonfiresNumber++;
+            if (!other.GetComponent<Bonfire>().IsFire)
+            {
+                other.GetComponent<Bonfire>().SetOnFire();
+                PlayerInventory.MatchesNumber--;
+                PlayerInventory.BonfiresNumber++;
+            }            
         }
 
         if (other.tag == "Match")

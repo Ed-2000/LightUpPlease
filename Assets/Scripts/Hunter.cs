@@ -5,19 +5,57 @@ using UnityEngine.AI;
 
 public class Hunter : MonoBehaviour
 {
-    private NavMeshAgent        _agent;
-    private Vector3             _target;
+    [SerializeField] private Transform[]    _goals;
+
+    private GameObject                      _player;
+    private NavMeshAgent                    _agent;
+    private Vector3                         _targetPosition;
 
     private void Start()
     {
         _agent = GetComponent<NavMeshAgent>();
-        _target = Vector3.zero;
+        _targetPosition = SetRandomTargetPosition(_goals);
     }
 
     private void Update()
     {
-
-        _agent.SetDestination(_target);
+        Move();
     }
 
+    private void Move()
+    {
+        if (_player == null &&  IsApproximatlyEqualTo(transform.position, _targetPosition))
+        {
+            _targetPosition = SetRandomTargetPosition(_goals);
+        }
+
+        _agent.SetDestination(_targetPosition);
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.tag == "Player")
+        {
+            _targetPosition = other.transform.position;
+        }
+    }
+
+    private bool IsApproximatlyEqualTo(Vector3 tr1, Vector3 tr2, float accuracy = 0.75f)    //повертає true, якщо tr1 знаходиться на відстані accuracy від tr2 
+    {
+        bool res = false;
+        accuracy = Mathf.Abs(accuracy);
+
+        if ((tr1.x + accuracy >= tr2.x && tr1.z + accuracy >= tr2.z) && (tr1.x - accuracy <= tr2.x && tr1.z - accuracy <= tr2.z))
+        {
+            res = true;
+        }
+
+        return res;
+    }
+
+    private Vector3 SetRandomTargetPosition(Transform[] positions)
+    {
+        Vector3 pos = positions[Random.Range(0, positions.Length - 1)].position;
+        return pos;
+    }
 }
