@@ -5,9 +5,9 @@ using UnityEngine.AI;
 
 public class Hunter : MonoBehaviour
 {
+    [SerializeField] private GameObject     _player;
     [SerializeField] private Transform[]    _goals;
 
-    private GameObject                      _player;
     private NavMeshAgent                    _agent;
     private Vector3                         _targetPosition;
 
@@ -24,7 +24,7 @@ public class Hunter : MonoBehaviour
 
     private void Move()
     {
-        if (_player == null &&  IsApproximatlyEqualTo(transform.position, _targetPosition))
+        if (IsApproximatlyEqualTo(transform.position, _targetPosition))
         {
             _targetPosition = SetRandomTargetPosition(_goals);
         }
@@ -36,7 +36,7 @@ public class Hunter : MonoBehaviour
     {
         if (other.tag == "Player")
         {
-            _targetPosition = other.transform.position;
+            _targetPosition = _player.transform.position;
         }
     }
 
